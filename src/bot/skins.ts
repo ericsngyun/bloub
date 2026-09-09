@@ -52,27 +52,23 @@ const ANGLES = Array.from({ length: PROFILE_SAMPLES }, (_, i) => (i / PROFILE_SA
 
 /**
  * Mascotte : profil radial derive de l'enveloppe convexe du path SVG du corps
- * (fill #1C1C1C, 4096x4096). Origine SVG (1833, 2200).
+ * (fill #1C1C1C, 4096x4096). Origine SVG (1733, 1719) = milieu des deux yeux
+ * (oeil gauche : 1424, 1718 ; oeil droit : 2042, 1719 ; milieu arrondi).
  *
  * L'enveloppe convexe est utilisee a la place du contour exact pour combler
- * l'etranglement entre le bol du R et la patte droite : un echantillonnage
- * radial du contour exact laisse un creux a 50-107deg (l'oeil gauche en etat
- * "wide" avec derive maximale atterrit precisement la). L'enveloppe efface ce
- * creux sans alterer les autres 44 indices, qui restent identiques au contour.
- *
- * Paramètres : 16 points par cubique de Bezier, echelle 1/1200, normalise a
- * 1.15. Origine 1833 px a droite (100 px a droite du centre des yeux a 1733)
- * et 2200 px en bas (477 px sous le milieu des yeux a 1723).
+ * l'etranglement entre le bol du R et la patte droite (creux a 50-107 deg sur
+ * le contour exact). 16 points par cubique de Bezier, echelle 1/1200, normalise
+ * a 1.15.
  */
 const mascotteRadii = [
-  0.9348, 0.9394, 0.9533, 0.9772, 1.0123, 1.0606, 1.1251, 1.1500,
-  1.0406, 0.9518, 0.8848, 0.8341, 0.7958, 0.7679, 0.7489, 0.7377,
-  0.7338, 0.7370, 0.7475, 0.7657, 0.7927, 0.8121, 0.8142, 0.8056,
-  0.7874, 0.7594, 0.7201, 0.6799, 0.6491, 0.6266, 0.6114, 0.6026,
-  0.5997, 0.6026, 0.6114, 0.6267, 0.6491, 0.6797, 0.7159, 0.7527,
-  0.7883, 0.8223, 0.8537, 0.8827, 0.9093, 0.9322, 0.9510, 0.9654,
-  0.9751, 0.9826, 0.9970, 1.0218, 1.0579, 1.0953, 1.1216, 1.1358,
-  1.1376, 1.1254, 1.0994, 1.0587, 1.0113, 0.9765, 0.9529, 0.9392,
+  0.8103, 0.8143, 0.8263, 0.8470, 0.8774, 0.9193, 0.9752, 1.0492,
+  1.1471, 1.1500, 1.0690, 1.0078, 0.9620, 0.9283, 0.9053, 0.8917,
+  0.8870, 0.8909, 0.9036, 0.9038, 0.8772, 0.8288, 0.7502, 0.6583,
+  0.5906, 0.5403, 0.5023, 0.4736, 0.4521, 0.4365, 0.4259, 0.4194,
+  0.4156, 0.4133, 0.4117, 0.4109, 0.4108, 0.4115, 0.4129, 0.4151,
+  0.4180, 0.4220, 0.4270, 0.4327, 0.4394, 0.4465, 0.4544, 0.4629,
+  0.4720, 0.4817, 0.4917, 0.5045, 0.5225, 0.5474, 0.5805, 0.6237,
+  0.6699, 0.7113, 0.7469, 0.7761, 0.7980, 0.8117, 0.8173, 0.8141,
 ]
 
 /** Galet : cercle deforme par deux harmoniques basses, donc irregulier mais lisse. */
