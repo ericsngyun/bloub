@@ -158,6 +158,7 @@ export default {
   },
 
   shapes: {
+    mascotte: 'Mascotte',
     cercle: 'Cercle',
     galet: 'Galet',
     squircle: 'Squircle',

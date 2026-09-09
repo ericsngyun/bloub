@@ -146,15 +146,26 @@ describe('formes du personnalisateur', () => {
   }, 30_000)
 
   /**
-   * Le cercle est la forme relevee sur la video, et le corps par defaut : le choisir dans
-   * le personnalisateur ne doit RIEN changer par rapport a ne rien choisir. C'est ce qui
-   * garantit que la correction est neutre sur la reference — y compris son oeil exterieur,
-   * qui frole deja le bord et doit continuer de le froler. C'est aussi ce qui protege
+   * La forme par defaut du produit est la mascotte. Le cercle reste la forme de
+   * reference du moteur (null shape = cercle, mesure sur la video) — les deux notions
+   * sont independantes. Le tourbillon et l'arrivee forcent 'cercle' directement dans App.vue.
+   */
+  it('DEFAULT_SHAPE est la mascotte et SHAPES la contient', () => {
+    expect(DEFAULT_SHAPE).toBe('mascotte')
+    expect(SHAPE_BY_ID.has('mascotte')).toBe(true)
+    expect(SHAPES.some((s) => s.id === 'mascotte')).toBe(true)
+  })
+
+  /**
+   * Le cercle est la forme relevee sur la video : le choisir dans le personnalisateur
+   * ne doit RIEN changer par rapport a ne rien choisir. C'est ce qui garantit que la
+   * correction est neutre sur la reference — y compris son oeil exterieur, qui frole
+   * deja le bord et doit continuer de le froler. C'est aussi ce qui protege
    * `public/favicon.svg`, dont les deux matrices d'yeux sont celles de `sample(1)` sur
-   * `idle`, au byte.
+   * `idle`, au byte. Ce n'est plus la forme par defaut du produit (DEFAULT_SHAPE),
+   * mais c'est toujours la forme de reference du moteur.
    */
   it('choisir le cercle rend exactement la meme chose que ne rien choisir', () => {
-    expect(DEFAULT_SHAPE).toBe('cercle')
     const cercle = SHAPE_BY_ID.get('cercle')!.radii
     for (const state of CORPS_DE_BASE) {
       for (const expr of [null, ...EXPRESSIONS]) {

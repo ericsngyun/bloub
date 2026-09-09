@@ -133,6 +133,7 @@ const en: typeof fr = {
   },
 
   shapes: {
+    mascotte: 'Mascot',
     cercle: 'Circle',
     galet: 'Pebble',
     squircle: 'Squircle',

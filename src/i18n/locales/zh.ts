@@ -136,6 +136,7 @@ const zh: typeof fr = {
   },
 
   shapes: {
+    mascotte: '吉祥物',
     cercle: '圆形',
     galet: '卵石',
     squircle: '圆角方形',
