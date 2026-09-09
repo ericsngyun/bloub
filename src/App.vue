@@ -486,9 +486,13 @@ const NOM = 'BLOUB'
  *   jusqu'a 25 px d'ecart vertical avec la trajectoire du cercle. Ca se voit
  *   comme un sautillement, et ce n'est pas corrigeable ailleurs : `radiusAtAngle`
  *   fait exactement ce pour quoi il est la.
+ *
+ * On force 'cercle' et non DEFAULT_SHAPE : le tourbillon et l'arrivee sont
+ * releves sur une sphere, et DEFAULT_SHAPE est desormais la mascotte. Une lettre
+ * en rotation ferait sauter les yeux via radiusAtAngle sur un contour anguleux.
  */
 const forme = computed(() =>
-  view.value === 'reglages' || nue.value ? DEFAULT_SHAPE : shape.value
+  view.value === 'reglages' || nue.value ? 'cercle' : shape.value
 )
 
 /** Duree d'une humeur. Assez longue pour qu'on la remarque sans qu'elle agite. */

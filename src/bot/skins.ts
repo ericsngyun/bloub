@@ -25,6 +25,7 @@ import {
  * rendrait `radii` en lecture seule, alors que le moteur le passe tel quel.
  */
 export type ShapeId =
+  | 'mascotte'
   | 'cercle'
   | 'galet'
   | 'squircle'
@@ -48,6 +49,27 @@ function normalize(radii: number[], max = 1): number[] {
 }
 
 const ANGLES = Array.from({ length: PROFILE_SAMPLES }, (_, i) => (i / PROFILE_SAMPLES) * Math.PI * 2)
+
+/**
+ * Mascotte : profil radial derive de l'enveloppe convexe du path SVG du corps
+ * (fill #1C1C1C, 4096x4096). Origine SVG (1733, 1719) = milieu des deux yeux
+ * (oeil gauche : 1424, 1718 ; oeil droit : 2042, 1719 ; milieu arrondi).
+ *
+ * L'enveloppe convexe est utilisee a la place du contour exact pour combler
+ * l'etranglement entre le bol du R et la patte droite (creux a 50-107 deg sur
+ * le contour exact). 16 points par cubique de Bezier, echelle 1/1200, normalise
+ * a 1.15.
+ */
+const mascotteRadii = [
+  0.8103, 0.8143, 0.8263, 0.8470, 0.8774, 0.9193, 0.9752, 1.0492,
+  1.1471, 1.1500, 1.0690, 1.0078, 0.9620, 0.9283, 0.9053, 0.8917,
+  0.8870, 0.8909, 0.9036, 0.9038, 0.8772, 0.8288, 0.7502, 0.6583,
+  0.5906, 0.5403, 0.5023, 0.4736, 0.4521, 0.4365, 0.4259, 0.4194,
+  0.4156, 0.4133, 0.4117, 0.4109, 0.4108, 0.4115, 0.4129, 0.4151,
+  0.4180, 0.4220, 0.4270, 0.4327, 0.4394, 0.4465, 0.4544, 0.4629,
+  0.4720, 0.4817, 0.4917, 0.5045, 0.5225, 0.5474, 0.5805, 0.6237,
+  0.6699, 0.7113, 0.7469, 0.7761, 0.7980, 0.8117, 0.8173, 0.8141,
+]
 
 /** Galet : cercle deforme par deux harmoniques basses, donc irregulier mais lisse. */
 const pebble = normalize(
@@ -77,6 +99,8 @@ const droplet = normalize(
 const capsule = profileFromPolygon(hullOfCircles(-0.42, 0, 0.62, 0.42, 0, 0.62), 0, 0)
 
 export const SHAPES: BotShape[] = [
+  // La mascotte est la forme par defaut du produit : placee en premier dans le personnalisateur.
+  { id: 'mascotte', radii: mascotteRadii },
   { id: 'cercle', radii: new Array(PROFILE_SAMPLES).fill(1) },
   { id: 'galet', radii: pebble },
   // 1.15 et pas 1.02 : sur une superellipse le rayon maximal est la diagonale,
@@ -94,7 +118,10 @@ export const SHAPES: BotShape[] = [
 // Map indexee par `string` et non par `ShapeId` : les appelants interrogent avec
 // une valeur relue du localStorage ou d'une prop, donc non validee.
 export const SHAPE_BY_ID = new Map<string, BotShape>(SHAPES.map((s) => [s.id, s]))
-export const DEFAULT_SHAPE = 'cercle'
+// La mascotte est la forme par defaut du produit. Le cercle reste la forme de reference
+// du moteur (null shape = cercle) et la forme mesuree sur la video — ce sont deux notions
+// distinctes. Le tourbillon et l'arrivee forcent 'cercle' explicitement dans App.vue.
+export const DEFAULT_SHAPE = 'mascotte'
 
 export type ColorId =
   | 'encre'
